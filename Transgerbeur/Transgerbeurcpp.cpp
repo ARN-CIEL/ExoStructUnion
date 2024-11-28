@@ -1,76 +1,67 @@
 #include <iostream>
-#include <cstdio>
-#include <cstring>
+
 using namespace std;
-
-// Énumération pour l'état du contenu
-enum EEtat { vide, palette, rouleau };
-
-// Structure pour Palette
-struct SPalette {
-    int poids;
-    char reference[20];
+enum EEtat {
+    vide, palette, rouleau
 };
-
-// Structure pour Rouleau
+struct SPalette
+{
+    int poids;
+    char ref[20];
+};
 struct SRouleau {
-    float longueur;
+    float longeur;
     int numero;
 };
-
-// Union pour le contenu du casier
-union UContenu {
+union Ucontenu {
     SPalette palette;
     SRouleau rouleau;
 };
-
-// Structure pour Casier
 struct SCasier {
-    int x;
-    int y;
-    EEtat etat;
-    UContenu contenu;
+    int px;
+    int py;
+    SPalette palette;
+    SRouleau rouleau;
 };
-
-SCasier transgerbeur[9];
-
-int main()
-{
-    // Déclaration et initialisation d'un rouleau
-    SRouleau ro1;
-    ro1.longueur = 12.34;
-    ro1.numero = 101;
-
-    // Déclaration d'une palette
+int main() {
+    cout << "Le programe Transgerbeur" << endl;
+    // Initialisation d'une palette
     SPalette pa1;
-    pa1.poids = 200;
-    // Utilisation de strcpy_s
-    strcpy_s(pa1.reference, 20, "PALETTE_REF_001");
+    pa1.poids = 101;
+    strcpy_s(pa1.ref, "ref1"); // Utilisation de strcpy pour initialiser la chaîne
 
-    // Déclaration et initialisation d'un état
+    // Initialisation d'un rouleau
+    SRouleau ro1{ 20.5, 42 };
+
+    // Gestion de l'état et du contenu
     EEtat etatC1 = vide;
+    Ucontenu cont;
+    cont.rouleau = ro1; // Stockage d'un rouleau dans l'union
 
-    // Déclaration et initialisation
-    UContenu cont;
-    cont.palette = pa1;
-    cont.rouleau = ro1;
-
-    // Déclaration d'un casier c1
+    // Initialisation de casiers
     SCasier c1;
-    c1.x = 2;
-    c1.y = 3;
-    c1.etat = palette;
-    c1.contenu.palette = pa1;
+    c1.palette = pa1;
+    c1.rouleau = ro1;
+    c1.px = 2;
+    c1.py = 3;
 
-    // Déclaration et initialisation d'un casier c2 avec une palette
     SCasier c2;
-    c2.x = 4; 
-    c2.y = 5; 
-    c2.etat = palette;
-    c2.contenu.palette = pa1;
+    c2.palette = pa1;
+    c2.rouleau = ro1;
+    c2.px = 4;
+    c2.py = 5;
 
-    // Déclaration d'un tableau de casiers
-    SCasier tableauCasier[9];
-    tableauCasier[0] = c1;
-    tableauCasier[2] = c2;
+    // Tableau de casiers
+    SCasier casier[9];
+    casier[0] = c1;
+    casier[1] = c2;
+    // Affichage des tailles
+    cout << "Taille de Palette : " << sizeof(SPalette) << " octets" << endl;
+    cout << "Taille de Rouleau : " << sizeof(SRouleau) << " octets" << endl;
+    cout << "Taille de contenu : " << sizeof(Ucontenu) << " octets" << endl;
+    cout << "Taille de Casier : " << sizeof(SCasier) << " octets" << endl;
+    cout << "Taille du tableau de casiers : " << sizeof(casier) << " octets" << endl;
+
+    return 0;
+
 }
